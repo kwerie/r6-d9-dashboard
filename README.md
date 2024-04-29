@@ -41,5 +41,5 @@ dotnet ef migrations add
 ```
 
 ## TODO List
-- [] Update the README
-- [] Setup API Controllers
+- [ ] Update the README
+- [ ] Setup API Controllers
