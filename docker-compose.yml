@@ -1,5 +1,4 @@
 ---
-
 services:
   haproxy:
     container_name: dashboard-haproxy
@@ -10,7 +9,7 @@ services:
       - ./docker/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     links:
       - frontend
-      #- backend
+      - backend
       - database
     networks:
       - local
@@ -26,6 +25,17 @@ services:
     entrypoint: "npm run docker-entrypoint"
     networks:
       - local
+
+  backend:
+    container_name: dashboard-backend
+    build:
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - local
+    tty: true
 
   database:
     container_name: dashboard-database
