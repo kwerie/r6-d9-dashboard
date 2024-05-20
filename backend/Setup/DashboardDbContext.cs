@@ -10,7 +10,7 @@ public class DashboardDbContext(Config config) : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder
-            .UseMySql(config.connectionString, config.MysqlServerVersion)
+            .UseMySql(config.ConnectionString, config.MysqlServerVersion)
             .LogTo(Console.WriteLine, LogLevel.Warning)
             .EnableDetailedErrors(); // TODO check if app is in dev mode before enabling this
     }
