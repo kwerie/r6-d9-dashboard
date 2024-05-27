@@ -8,6 +8,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.SetupSingletons(builder.Configuration);
 builder.Services.AddControllers();
+builder.Configuration
+    .SetBasePath(Environment.CurrentDirectory)
+    .AddJsonFile("appsettings.Local.json", optional: true);
 
 var app = builder.Build();
 
