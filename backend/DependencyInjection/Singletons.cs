@@ -1,4 +1,7 @@
+using backend.Client;
 using backend.Configuration;
+using backend.Repositories;
+using backend.Services;
 using backend.Setup;
 
 namespace backend.DependencyInjection;
@@ -9,8 +12,24 @@ public static class Singletons
     {
         serviceCollection.AddSingleton<Config>(_ => new Config
         {
-            connectionString = "server=localhost;port=3306;database=local;user=local;password=local"
+            ConnectionString = "server=database;port=3306;database=local;user=local;password=local"
         });
         serviceCollection.AddDbContext<DashboardDbContext>();
+        serviceCollection.AddSingleton<HttpClient>(_ => new HttpClient());
+        serviceCollection.AddSingleton<IUserService, UserService>();
+        serviceCollection.AddSingleton<IUserRepository, UserRepository>();
+        serviceCollection.AddSingleton<IDiscordLoginSessionService, DiscordLoginSessionService>();
+        serviceCollection.AddSingleton<IDiscordLoginSessionRepository, DiscordLoginSessionRepository>();
+        // TODO: get config from environment
+        serviceCollection.AddSingleton<IDiscordClient, DiscordClient>(services =>
+        {
+            var config = configuration.GetSection("Discord");
+            return new DiscordClient(
+                services.GetRequiredService<HttpClient>(),
+                config.GetValue<string?>("ClientId", null) ?? throw new InvalidOperationException("Missing config key ClientId"),
+                config.GetValue<string?>("ClientSecret", null) ?? throw new InvalidOperationException("Missing config key ClientSecret"),
+                config.GetValue<string?>("RedirectUri", null) ?? throw new InvalidOperationException("Missing config key RedirectUri")
+            );
+        });
     }
 }
