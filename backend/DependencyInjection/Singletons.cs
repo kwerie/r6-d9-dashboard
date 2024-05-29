@@ -16,10 +16,10 @@ public static class Singletons
         });
         serviceCollection.AddDbContext<DashboardDbContext>();
         serviceCollection.AddSingleton<HttpClient>(_ => new HttpClient());
-        serviceCollection.AddSingleton<IUserService, UserService>();
-        serviceCollection.AddSingleton<IUserRepository, UserRepository>();
-        serviceCollection.AddSingleton<IDiscordLoginSessionService, DiscordLoginSessionService>();
-        serviceCollection.AddSingleton<IDiscordLoginSessionRepository, DiscordLoginSessionRepository>();
+        serviceCollection.AddScoped<IUserService, UserService>();
+        serviceCollection.AddScoped<IUserRepository, UserRepository>();
+        serviceCollection.AddScoped<IDiscordLoginSessionService, DiscordLoginSessionService>();
+        serviceCollection.AddScoped<IDiscordLoginSessionRepository, DiscordLoginSessionRepository>();
         // TODO: get config from environment
         serviceCollection.AddSingleton<IDiscordClient, DiscordClient>(services =>
         {

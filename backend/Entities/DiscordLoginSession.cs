@@ -16,7 +16,7 @@ public class DiscordLoginSession
     [MaxLength(50)]
     public string TokenType { get; set; } = "Bearer";
 
-    public required long ExpiresIn { get; set; }
+    public required DateTime ExpiresIn { get; set; }
 
     [MaxLength(255)]
     public required string RefreshToken { get; set; }
