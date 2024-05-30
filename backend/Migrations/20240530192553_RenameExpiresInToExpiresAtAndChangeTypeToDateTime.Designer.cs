@@ -12,8 +12,8 @@ using backend.Setup;
 namespace backend.Migrations
 {
     [DbContext(typeof(DashboardDbContext))]
-    [Migration("20240529182307_ChangeExpiresInColumnToDateTime")]
-    partial class ChangeExpiresInColumnToDateTime
+    [Migration("20240530192553_RenameExpiresInToExpiresAtAndChangeTypeToDateTime")]
+    partial class RenameExpiresInToExpiresAtAndChangeTypeToDateTime
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,7 +38,7 @@ namespace backend.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<DateTime>("ExpiresIn")
+                    b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("InvalidatedAt")

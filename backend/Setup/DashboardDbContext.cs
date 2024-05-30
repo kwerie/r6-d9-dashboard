@@ -8,6 +8,7 @@ public class DashboardDbContext(Config config) : DbContext
 {
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<DiscordLoginSession> DiscordLoginSessions { get; set; } = null!;
+    public DbSet<LoginSession> LoginSessions { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

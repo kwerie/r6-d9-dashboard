@@ -6,30 +6,35 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class ChangeExpiresInColumnToDateTime : Migration
+    public partial class RenameExpiresInToExpiresAtAndChangeTypeToDateTime : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<DateTime>(
+            migrationBuilder.DropColumn(
                 name: "ExpiresIn",
+                table: "discord_login_sessions");
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "ExpiresAt",
                 table: "discord_login_sessions",
                 type: "datetime(6)",
-                nullable: false,
-                oldClrType: typeof(int),
-                oldType: "int");
+                nullable: false);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "ExpiresAt",
+                table: "discord_login_sessions");
+
+            migrationBuilder.AddColumn<int>(
                 name: "ExpiresIn",
                 table: "discord_login_sessions",
                 type: "int",
                 nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "datetime(6)");
+                defaultValue: 0);
         }
     }
 }

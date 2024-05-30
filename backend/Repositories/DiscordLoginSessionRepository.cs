@@ -11,7 +11,7 @@ public class DiscordLoginSessionRepository(DashboardDbContext context) : IDiscor
         var session = new DiscordLoginSession
         {
             AccessToken = accessTokenResponse.AccessToken,
-            ExpiresIn = DateTime.UtcNow.AddSeconds(accessTokenResponse.ExpiresIn),
+            ExpiresAt = DateTime.UtcNow.AddSeconds(accessTokenResponse.ExpiresIn),
             RefreshToken = accessTokenResponse.RefreshToken,
             TokenType = accessTokenResponse.TokenType,
             Scope = accessTokenResponse.Scope,
