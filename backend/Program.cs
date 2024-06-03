@@ -26,13 +26,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration.GetValue<string>("Jwt:Audience")!,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 builder.Configuration.GetValue<string>("Jwt:Key")!
-            ))
+            )),
+            ClockSkew = TimeSpan.Zero // Set ClockSkew to 0 so tokens expire exactly at token expiration time instead of 5 mins later
         };
     });
 builder.Services.AddControllers();
 
 var app = builder.Build();
 app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

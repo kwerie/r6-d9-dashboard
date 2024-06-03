@@ -4,5 +4,10 @@ namespace backend.Services;
 
 public interface ILoginSessionService
 {
-    Task<LoginSession> Create(User user, string token);
+    Task<LoginSession> CreateAsync(User user);
+    Task PersistAsync(LoginSession session);
+    Task<LoginSession> RefreshAsync(LoginSession session);
+    Task<LoginSession?> FindActiveForUserAsync(User user);
+    Task<IEnumerable<LoginSession>> FindAllExpiredForUserAsync(User user);
+    Task InvalidateAsync(LoginSession session);
 }

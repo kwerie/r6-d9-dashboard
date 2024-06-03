@@ -7,4 +7,5 @@ public interface IUserService
 {
     Task<User> FindOrCreateAsync(UserInformationResponse userInfo);
     Task UpdateUserInfoAsync(User user, UserInformationResponse userInfo);
+    Task<User?> FindByIdAsync(int id);
 }

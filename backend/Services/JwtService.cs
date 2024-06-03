@@ -13,23 +13,25 @@ public class JwtService(
     string algo = SecurityAlgorithms.HmacSha256
 ) : IJwtService
 {
-    public async Task<JwtSecurityToken> GenerateTokenForUserAsync(User user)
+    public Task<JwtSecurityToken> GenerateTokenForUserAsync(User user, string refreshToken)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
         var credentials = new SigningCredentials(securityKey, algo);
         var claims = new[]
         {
             new Claim("username", user.Username),
-            new Claim("email", user.Email)
-            // TODO: Add when implementing roles (if ever)?
-            // new Claim(ClaimTypes.Role, user.Role)
+            new Claim("email", user.Email),
+            new Claim("user_id", user.Id.ToString())
         };
-        return new JwtSecurityToken(
-            issuer,
-            audience,
-            claims,
-            expires: DateTime.UtcNow.AddMinutes(15),
-            signingCredentials: credentials
+
+        return Task.FromResult(
+            new JwtSecurityToken(
+                issuer,
+                audience,
+                claims,
+                expires: DateTime.UtcNow.AddMinutes(15),
+                signingCredentials: credentials
+            )
         );
     }
 

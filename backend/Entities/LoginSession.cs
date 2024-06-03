@@ -6,6 +6,10 @@ namespace backend.Entities;
 [Table(name: "user_login_sessions")]
 public class LoginSession
 {
+    public const int DefaultExpiresInMinutes = 15;
+    public const int RefreshTokenExpiresInDays = 7;
+
+
     public int Id { get; private set; }
     public int UserId { get; set; }
     public User User { get; set; } = null!;
@@ -20,8 +24,6 @@ public class LoginSession
     public DateTime IssuedAt { get; set; }
     public DateTime? InvalidatedAt { get; set; }
 
-    private const int DefaultRefreshTokenExpiresInDays = 7;
-
     public LoginSession()
     {
         Refresh();
@@ -29,8 +31,9 @@ public class LoginSession
 
     public void Refresh()
     {
+        AccessToken = "";
         IssuedAt = DateTime.Now;
-        ExpiresAt = DateTime.Now.AddDays(DefaultRefreshTokenExpiresInDays);
+        ExpiresAt = DateTime.Now.AddMinutes(DefaultExpiresInMinutes);
         RefreshToken = Guid.NewGuid().ToString();
     }
 }

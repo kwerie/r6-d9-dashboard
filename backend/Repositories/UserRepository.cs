@@ -37,4 +37,9 @@ public class UserRepository(DashboardDbContext context) : IUserRepository
         context.Users.Update(user);
         await context.SaveChangesAsync();
     }
+
+    public Task<User?> FindByIdAsync(int id)
+    {
+        return context.Users.SingleOrDefaultAsync(u => u.Id == id);
+    }
 }

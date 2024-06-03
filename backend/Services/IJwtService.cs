@@ -5,6 +5,6 @@ namespace backend.Services;
 
 public interface IJwtService
 {
-    Task<JwtSecurityToken> GenerateTokenForUserAsync(User user);
+    Task<JwtSecurityToken> GenerateTokenForUserAsync(User user, string refreshToken);
     Task<string> ToString(JwtSecurityToken token);
 }
