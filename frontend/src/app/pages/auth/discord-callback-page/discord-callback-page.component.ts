@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { BehaviorSubject } from "rxjs";
 import { AuthService } from "../../../services/auth/auth.service";
 
@@ -11,10 +11,11 @@ import { AuthService } from "../../../services/auth/auth.service";
 export class DiscordCallbackPageComponent {
     private code: BehaviorSubject<string> = new BehaviorSubject<string>("");
     public constructor(
-        private readonly route: ActivatedRoute,
-        private readonly authService: AuthService
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly authService: AuthService,
+        private readonly router: Router
     ) {
-        this.route.queryParams.subscribe({
+        this.activatedRoute.queryParams.subscribe({
             next: (values) => {
                 if (values["code"]) {
                     this.code.next(values["code"]);
@@ -24,10 +25,9 @@ export class DiscordCallbackPageComponent {
 
         this.code.subscribe({
             next: (code) => {
-                console.log("code", code);
                 this.authService.login(code).subscribe({
                     next: (res) => {
-                        console.log(res);
+                        this.router.navigate(["/dashboard"])
                     },
                 });
             },
