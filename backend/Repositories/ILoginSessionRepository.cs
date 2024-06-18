@@ -10,4 +10,5 @@ public interface ILoginSessionRepository
     Task<LoginSession?> FindActiveForUserAsync(User user);
     Task<IEnumerable<LoginSession>> FindAllExpiredForUserAsync(User user);
     Task InvalidateAsync(LoginSession session);
+    Task<LoginSession?> FindByRefreshToken(string refreshToken);
 }

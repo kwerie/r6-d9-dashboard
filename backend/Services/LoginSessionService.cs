@@ -25,6 +25,11 @@ public class LoginSessionService(ILoginSessionRepository loginSessionRepository)
         return loginSessionRepository.FindActiveForUserAsync(user);
     }
 
+    public Task<LoginSession?> FindByRefreshToken(string refreshToken)
+    {
+        return loginSessionRepository.FindByRefreshToken(refreshToken);
+    }
+
     public Task<IEnumerable<LoginSession>> FindAllExpiredForUserAsync(User user)
     {
         return loginSessionRepository.FindAllExpiredForUserAsync(user);

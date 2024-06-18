@@ -1,6 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
 using backend.Entities;
 using backend.Setup;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories;
 
@@ -48,6 +48,11 @@ public class LoginSessionRepository(DashboardDbContext context) : ILoginSessionR
                     l => l.InvalidatedAt == null && l.ExpiresAt < DateTime.Now
                 ).AsEnumerable()
         );
+    }
+
+    public async Task<LoginSession?> FindByRefreshToken(string refreshToken)
+    {
+        return await context.LoginSessions.Include(ls => ls.User).FirstOrDefaultAsync(ls => ls.RefreshToken == refreshToken && ls.InvalidatedAt == null);
     }
 
     public async Task InvalidateAsync(LoginSession session)
