@@ -35,6 +35,8 @@ builder.Services.AddControllers();
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseHttpLogging();
+app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -44,5 +46,4 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-app.UseHttpsRedirection();
 app.Run();
