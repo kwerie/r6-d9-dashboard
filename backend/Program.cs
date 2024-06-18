@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.SetupSingletons(builder.Configuration);
 builder.Configuration
     .SetBasePath(Environment.CurrentDirectory)
+    .AddJsonFile("appsettings.Development.json", optional: true)
     .AddJsonFile("appsettings.Local.json", optional: true);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -37,7 +38,6 @@ builder.Services.AddControllers();
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHttpLogging();
 app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.

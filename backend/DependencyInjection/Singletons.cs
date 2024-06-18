@@ -10,10 +10,14 @@ public static class Singletons
 {
     public static void SetupSingletons(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        serviceCollection.AddSingleton<Config>(_ => new Config
+        serviceCollection.AddSingleton<Config>(_ =>
         {
-            ConnectionString = "server=database;port=3306;database=local;user=local;password=local"
-            // ConnectionString = "server=localhost;port=3306;database=local;user=local;password=local" // TODO: get connection string from config
+            var dbConnectionString = configuration.GetConnectionString("Database") ??
+                                     throw new ArgumentException("Missing required config key");
+            return new Config
+            {
+                ConnectionString = dbConnectionString
+            };
         });
         serviceCollection.AddDbContext<DashboardDbContext>();
         serviceCollection.AddSingleton<HttpClient>(_ => new HttpClient());
