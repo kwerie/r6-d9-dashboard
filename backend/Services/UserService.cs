@@ -11,8 +11,13 @@ public class UserService(IUserRepository userRepository) : IUserService
         return userRepository.FindOrCreate(userInfo);
     }
 
-    public async Task UpdateUserInfoAsync(User user, UserInformationResponse userInfo)
+    public Task UpdateUserInfoAsync(User user, UserInformationResponse userInfo)
     {
-        await userRepository.UpdateUserInfoAsync(user, userInfo);
+        return userRepository.UpdateUserInfoAsync(user, userInfo);
+    }
+
+    public Task<User?> FindByIdAsync(int id)
+    {
+        return userRepository.FindByIdAsync(id);
     }
 }

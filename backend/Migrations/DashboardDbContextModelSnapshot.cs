@@ -35,8 +35,8 @@ namespace backend.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("ExpiresIn")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("InvalidatedAt")
                         .HasColumnType("datetime(6)");
@@ -64,6 +64,43 @@ namespace backend.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("discord_login_sessions");
+                });
+
+            modelBuilder.Entity("backend.Entities.LoginSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccessToken")
+                        .IsRequired()
+                        .HasMaxLength(65535)
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("InvalidatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("IssuedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasMaxLength(65535)
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("user_login_sessions");
                 });
 
             modelBuilder.Entity("backend.Entities.User", b =>
@@ -113,9 +150,22 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("backend.Entities.LoginSession", b =>
+                {
+                    b.HasOne("backend.Entities.User", "User")
+                        .WithMany("LoginSessions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("backend.Entities.User", b =>
                 {
                     b.Navigation("DiscordLoginSessions");
+
+                    b.Navigation("LoginSessions");
                 });
 #pragma warning restore 612, 618
         }

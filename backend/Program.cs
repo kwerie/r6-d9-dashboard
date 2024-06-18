@@ -1,4 +1,7 @@
+using System.Text;
 using backend.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,12 +10,35 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.SetupSingletons(builder.Configuration);
-builder.Services.AddControllers();
 builder.Configuration
     .SetBasePath(Environment.CurrentDirectory)
+    .AddJsonFile("appsettings.Development.json", optional: true)
     .AddJsonFile("appsettings.Local.json", optional: true);
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateActor = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration.GetValue<string>("Jwt:Issuer")!,
+            ValidAudience = builder.Configuration.GetValue<string>("Jwt:Audience")!,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                builder.Configuration.GetValue<string>("Jwt:Key")!
+            )),
+            ClockSkew = TimeSpan.Zero // Set ClockSkew to 0 so tokens expire exactly at token expiration time instead of 5 mins later
+        };
+    });
+builder.Services.AddControllers();
 
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseHttpsRedirection();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -22,5 +48,4 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-app.UseHttpsRedirection();
 app.Run();

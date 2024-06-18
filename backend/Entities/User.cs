@@ -24,4 +24,5 @@ public class User
     public required string Email { get; set; }
 
     public ICollection<DiscordLoginSession> DiscordLoginSessions { get; } = new List<DiscordLoginSession>();
+    public ICollection<LoginSession> LoginSessions { get; } = new List<LoginSession>();
 }

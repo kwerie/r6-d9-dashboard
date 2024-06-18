@@ -1,8 +1,10 @@
 using backend.Bodies;
 using backend.Client;
+using backend.Entities;
 using backend.Services;
-using backend.Setup;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace backend.Controllers;
 
@@ -12,14 +14,13 @@ public class LoginController(
     IDiscordClient discordClient,
     IUserService userService,
     IDiscordLoginSessionService discordLoginSessionService,
-    DashboardDbContext context) : Controller
+    ILoginSessionService loginSessionService,
+    IJwtService jwtService) : Controller
 {
+    [AllowAnonymous]
     [HttpPost("/api/auth/discord/login")]
     public async Task<IResult> Post([FromBody] LoginBody loginBody)
     {
-        // Fetch an access_token, refresh_token, expires_in etc. from discord
-        // Create DiscordLoginSession for user
-        // Create LoginSession for user
         var accessTokenResponse = await discordClient.Authorize(loginBody.Code);
         if (accessTokenResponse is null)
         {
@@ -34,10 +35,48 @@ public class LoginController(
 
         var user = await userService.FindOrCreateAsync(userInfo);
         await userService.UpdateUserInfoAsync(user, userInfo);
-        // TODO: add a check if the accessToken and refreshToken do not match. If they match, DO NOT invalidate the session.
         await discordLoginSessionService.InvalidateAllForUserAsync(user);
         await discordLoginSessionService.CreateAsync(user, accessTokenResponse);
+        var loginSession = await loginSessionService.FindActiveForUserAsync(user);
 
-        return Results.NoContent();
+        var expiredSessions = await loginSessionService.FindAllExpiredForUserAsync(user);
+        foreach (var session in expiredSessions)
+        {
+            await loginSessionService.InvalidateAsync(session);
+        }
+
+        if (loginSession is not null)
+        {
+            var expiresAt = loginSession.IssuedAt;
+            expiresAt = expiresAt.AddDays(LoginSession.RefreshTokenExpiresInDays);
+            return Results.Ok(
+                new
+                {
+                    access_token = loginSession.AccessToken,
+                    refresh_token = loginSession.RefreshToken,
+                    refresh_token_expires_at = expiresAt
+                }
+            );
+        }
+
+        loginSession = await loginSessionService.CreateAsync(user);
+
+        var token = await jwtService.GenerateTokenForUserAsync(user, loginSession.RefreshToken);
+        var tokenString = await jwtService.ToString(token);
+
+        loginSession.AccessToken = tokenString;
+        await loginSessionService.PersistAsync(loginSession);
+
+        var refreshTokenExpiresAt = loginSession.IssuedAt;
+        refreshTokenExpiresAt = refreshTokenExpiresAt.AddDays(LoginSession.RefreshTokenExpiresInDays);
+
+        return Results.Ok(
+            new
+            {
+                access_token = loginSession.AccessToken,
+                refresh_token = loginSession.RefreshToken,
+                refresh_token_expires_at = refreshTokenExpiresAt
+            }
+        );
     }
 }
