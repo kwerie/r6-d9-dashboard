@@ -26,14 +26,13 @@ public class GetUserController(
         }
 
         return Results.Ok(
-            JsonConvert.SerializeObject(
-                new
-                {
-                    username = user.Username,
-                    email = user.Email,
-                    avatar_url = user.AvatarUrl
-                }
-            )
+            new
+            {
+                id = user.Id,
+                username = user.Username,
+                email = user.Email,
+                avatar_url = user.AvatarUrl
+            }
         );
     }
 }

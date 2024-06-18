@@ -50,14 +50,12 @@ public class LoginController(
             var expiresAt = loginSession.IssuedAt;
             expiresAt = expiresAt.AddDays(LoginSession.RefreshTokenExpiresInDays);
             return Results.Ok(
-                JsonConvert.SerializeObject(
-                    new
-                    {
-                        access_token = loginSession.AccessToken,
-                        refresh_token = loginSession.RefreshToken,
-                        refresh_token_expires_at = expiresAt
-                    }
-                )
+                new
+                {
+                    access_token = loginSession.AccessToken,
+                    refresh_token = loginSession.RefreshToken,
+                    refresh_token_expires_at = expiresAt
+                }
             );
         }
 
@@ -73,14 +71,12 @@ public class LoginController(
         refreshTokenExpiresAt = refreshTokenExpiresAt.AddDays(LoginSession.RefreshTokenExpiresInDays);
 
         return Results.Ok(
-            JsonConvert.SerializeObject(
-                new
-                {
-                    access_token = loginSession.AccessToken,
-                    refresh_token = loginSession.RefreshToken,
-                    refresh_token_expires_at = refreshTokenExpiresAt
-                }
-            )
+            new
+            {
+                access_token = loginSession.AccessToken,
+                refresh_token = loginSession.RefreshToken,
+                refresh_token_expires_at = refreshTokenExpiresAt
+            }
         );
     }
 }
