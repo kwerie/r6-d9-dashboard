@@ -21,8 +21,6 @@ public class RefreshTokenController(
 
         if (loginSession is null)
         {
-            // LoginSession is not found or has expired
-            Console.WriteLine("login session is null?");
             return Results.Unauthorized();
         }
 
@@ -44,7 +42,6 @@ public class RefreshTokenController(
         refreshedSessionExpiresAt = refreshedSessionExpiresAt.AddDays(LoginSession.RefreshTokenExpiresInDays);
 
 
-        // Return the new AccessToken
         return Results.Ok(
             new
             {
