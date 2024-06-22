@@ -1,0 +1,26 @@
+:host {
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem;
+
+    .middle {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+
+      .nav-item {
+        text-decoration: none;
+        color: white; // TODO: get color from variable
+        font-weight: 500;
+        text-transform: uppercase; // TODO: consider this
+
+        &.active {
+          font-weight: bold;
+          text-decoration: underline; // TODO: remove when found something better
+        }
+      }
+    }
+  }
+}

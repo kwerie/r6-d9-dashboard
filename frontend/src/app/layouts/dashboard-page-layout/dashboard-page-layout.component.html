@@ -1,2 +1,5 @@
-<app-top-navigation [user]="user | async"></app-top-navigation>
+<app-top-navigation [user]="user | async"
+                    [discordOAuthUrl]="discordOAuthUrl"
+                    (logoutEmitter)="logout()"
+></app-top-navigation>
 <ng-content />

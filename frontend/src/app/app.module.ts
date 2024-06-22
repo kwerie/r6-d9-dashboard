@@ -20,6 +20,9 @@ import {jwtDecode} from "jwt-decode";
 import {JWT_DECODE} from "./constants/jwt-decode.constant";
 import {JwtService} from "./services/jwt/jwt.service";
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
+import {NgOptimizedImage} from "@angular/common";
+import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
+import { FeaturesPageComponent } from './pages/features-page/features-page.component';
 
 function jwtDecodeFactory(): unknown {
     return jwtDecode;
@@ -35,12 +38,15 @@ function jwtDecodeFactory(): unknown {
         DashboardPageComponent,
         DashboardPageLayoutComponent,
         TopNavigationComponent,
+        UserDropdownComponent,
+        FeaturesPageComponent,
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         FontAwesomeModule,
         HttpClientModule,
+        NgOptimizedImage,
     ],
     providers: [
         LocalStorageService,

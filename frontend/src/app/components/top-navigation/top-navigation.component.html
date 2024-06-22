@@ -1,3 +1,26 @@
-@if (user) {
-    <div>{{ user.username }}</div>
-}
+<div class="nav container">
+    <div class="left">
+        R6-D9
+    </div>
+    <div class="middle">
+        @for (item of navigationItems; track item) {
+            <a class="nav-item" routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+               [routerLink]="item.url"
+            >
+                {{ item.title }}
+            </a>
+        }
+    </div>
+    <div class="right">
+        @if (user) {
+            <app-user-dropdown [user]="user"
+                               (logoutEmitter)="logoutEmitter.emit()"
+            ></app-user-dropdown>
+        } @else {
+            <app-login-with-discord-button
+                    [discordOAuthUrl]="discordOAuthUrl"
+            ></app-login-with-discord-button>
+        }
+    </div>
+</div>
