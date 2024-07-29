@@ -27,5 +27,4 @@ export class TopNavigationComponent {
             url: "/features"
         },
     ];
-    protected readonly alert = alert;
 }

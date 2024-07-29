@@ -23,6 +23,7 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 import {NgOptimizedImage} from "@angular/common";
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 import { FeaturesPageComponent } from './pages/features-page/features-page.component';
+import { ButtonComponent } from './components/button/button.component';
 
 function jwtDecodeFactory(): unknown {
     return jwtDecode;
@@ -40,6 +41,7 @@ function jwtDecodeFactory(): unknown {
         TopNavigationComponent,
         UserDropdownComponent,
         FeaturesPageComponent,
+        ButtonComponent,
     ],
     imports: [
         BrowserModule,

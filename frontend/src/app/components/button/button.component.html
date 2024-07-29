@@ -1,0 +1,6 @@
+<a class="button-wrapper" [href]="buttonUrl" [className]="'size-' + buttonSize">
+    @if (buttonIcon) {
+        <fa-icon [icon]="buttonIcon"></fa-icon>
+    }
+    <ng-content></ng-content>
+</a>

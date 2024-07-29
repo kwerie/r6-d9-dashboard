@@ -3,14 +3,14 @@
         R6-D9
     </div>
     <div class="middle">
-        @for (item of navigationItems; track item) {
-            <a class="nav-item" routerLinkActive="active"
-               [routerLinkActiveOptions]="{exact: true}"
-               [routerLink]="item.url"
-            >
-                {{ item.title }}
-            </a>
-        }
+<!--        @for (item of navigationItems; track item) {-->
+<!--            <a class="nav-item" routerLinkActive="active"-->
+<!--               [routerLinkActiveOptions]="{exact: true}"-->
+<!--               [routerLink]="item.url"-->
+<!--            >-->
+<!--                {{ item.title }}-->
+<!--            </a>-->
+<!--        }-->
     </div>
     <div class="right">
         @if (user) {

@@ -1,0 +1,37 @@
+:host {
+  color: #b2b2b2; // TODO: move to css variable + check if this is not too dark
+  border: 1px solid #b2b2b2;
+  border-radius: .6rem;
+  text-decoration: none;
+  padding: .75rem;
+  cursor: pointer;
+  transition: .3s ease;
+
+  &:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  a {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    justify-content: center;
+    
+    &.size-small {
+      font-size: 1.4rem;
+    }
+
+    &.size-medium {
+      font-size: 1.6rem;
+    }
+
+    &.size-large {
+      font-size: 1.8rem;
+    }
+
+    &.size-xl {
+      font-size: 2.4rem;
+    }
+  }
+}

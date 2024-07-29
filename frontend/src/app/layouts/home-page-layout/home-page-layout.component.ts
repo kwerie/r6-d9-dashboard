@@ -14,7 +14,6 @@ export class HomePageLayoutComponent {
     public discordOAuthUrl: string = environment.discordOAuthUrl;
     public user: Observable<User|null>;
 
-
     public constructor(
         private readonly loginSessionService: LoginSessionService,
         private readonly userService: UserService,
